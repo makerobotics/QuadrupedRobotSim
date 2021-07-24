@@ -13,17 +13,21 @@ class Pvector{
 }
 
 class Segment{
-    constructor(length, position, theta){
+    /* length: length of first segment 
+       topPosition: coordinates of top segment attachment
+       theta: angle from origin axis (pointing down) */
+    constructor(length, topPosition, theta){
         this.length = length;
         this.theta = theta*Math.PI/180;
-        this.position = position;
+        this.topPosition = topPosition;
+        this.bottomPosition = this.getBottomPosition();
     }
 
     /**
      * @param {any} updatedPosition
      */
-    set Position(updatedPosition){
-        this.position = updatedPosition;
+    set TopPosition(updatedPosition){
+        this.topPosition = updatedPosition;
     }
     
     /**
@@ -33,11 +37,14 @@ class Segment{
         this.theta = updatedTheta;
     }
 
-    getB(){
-        return new Pvector(this.length*Math.sin(this.theta),
+    getBottomPosition(){
+        let bottom = new Pvector(
+            this.length*Math.sin(this.theta),
             0,
             this.length*Math.cos(this.theta)
-            );
+        );
+        this.bottomPosition = bottom;
+        return bottom;
     }
 }
 
@@ -46,12 +53,16 @@ class Leg{
         this.segments = new Array(segment);
     }
 
-    add(segment){
+    get Segments(){
+        return this.segments;
+    }
+
+    addSegment(segment){
         this.segments.push(segment);
     }
 
     getLastAttachment(){
-        return this.segments[this.segments.length-1].getB();
+        return this.segments[this.segments.length-1].getBottomPosition();
     }
 
     goto(x, y, z){
@@ -61,26 +72,27 @@ class Leg{
     move(theta0, theta1){
         this.segments[0].theta = theta0*Math.PI/180;
         this.segments[1].theta = theta1*Math.PI/180;
-        this.segments[1].position = this.segments[0].getB();
-        console.log("Target: "+this.segments[1].position.print());
+        this.segments[1].topPosition = this.segments[0].getBottomPosition();
+        console.log("Move - Target: "+this.segments[1].getBottomPosition().print());
     }
 
     info(index){
         this.segments.forEach(element => {
-            console.log("Segment length: "+element.length.toString());
-            console.log("A Position: "+element.position.print());
-            console.log("B Position: "+element.getB().print());
+            console.log("Info - Segment length: "+element.length.toString());
+            console.log("A Position: "+element.topPosition.print());
+            console.log("B Position: "+element.getBottomPosition().print());
         });
     }
 }
 
 function main(){
-    let seg = new Segment(10, new Pvector(0,0,0), 45);
+    let seg = new Segment(10, new Pvector(0,0,25), 45);
     let l = new Leg(seg);
-    l.add(new Segment(15, l.getLastAttachment(), 0));
+    l.addSegment(new Segment(15, l.getLastAttachment(), 0));
     l.info();
     l.move(50, 10);
     l.move(50, 15);
+
     let scene = new THREE.Scene();
     let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
     let renderer = new THREE.WebGLRenderer();
@@ -88,12 +100,12 @@ function main(){
     renderer.setClearColor('rgb(60, 60, 255)');
     document.body.appendChild( renderer.domElement );
     let controls = new THREE.OrbitControls(camera, renderer.domElement);
-    let floor = generateFloor(30, 30);
+    let floor = generateFloor(100, 100);
     let pointLight = generatePointLight(0xffffff, 1);
     pointLight.position.z = 40;
-    camera.position.x = 20;
-    camera.position.y = 20;
-    camera.position.z = 10;
+    camera.position.x = 30;
+    camera.position.y = 30;
+    camera.position.z = 30;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     camera.up.set( 0, 0, 1 );
     const axesHelper = new THREE.AxesHelper( 50 );
@@ -103,11 +115,14 @@ function main(){
         bodyLength:10,
         bodyWidth:5,
         bodyDepth:2,
-        bodyHeight:15
-    }
-    
+        bodyHeight:25
+    };
     let spotBody = drawBody(spot);
-    let spotLegFL = drawLegs(new THREE.Vector3(0,0,0),new THREE.Vector3(4,5,3));
+    
+    let orig = new THREE.Vector3(l.Segments[0].topPosition.x,l.Segments[0].topPosition.y,l.Segments[0].topPosition.z);
+    let end = new THREE.Vector3(l.Segments[0].getBottomPosition().x,l.Segments[0].getBottomPosition().y,l.Segments[0].getBottomPosition().z);
+    let spotLegFL = drawLegs(orig, end);
+    
     drawAxis(scene);
 
     scene.add( spotBody );
@@ -119,9 +134,11 @@ function main(){
 }
 
 function drawBody(spot){
-    let geometry = new THREE.BoxGeometry(spot.bodyWidth, spot.bodyHeight, spot.bodyDepth);
+    let geometry = new THREE.BoxGeometry(spot.bodyLength, spot.bodyWidth, spot.bodyDepth);
     let material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
     let mesh = new THREE.Mesh( geometry, material );
+    mesh.position.x = -spot.bodyLength/2;
+    mesh.position.y = -spot.bodyWidth/2;
     mesh.position.z = spot.bodyHeight;
     return mesh;
 }
@@ -129,9 +146,8 @@ function drawBody(spot){
 function drawLegs(p1, p2){
     let mat = new THREE.LineBasicMaterial({color:0xffff00});
     let points = [];
-    points.push( new THREE.Vector3( - 10, 0, 0 ) );
-    points.push( new THREE.Vector3( 0, 10, 0 ) );
-    points.push( new THREE.Vector3( 10, 0, 0 ) );
+    points.push( new THREE.Vector3(p1.x, p1.y, p1.z));
+    points.push( new THREE.Vector3(p2.x, p2.y, p2.z));
     
     let geometry = new THREE.BufferGeometry().setFromPoints( points );
     let line = new THREE.Line( geometry, mat );
@@ -175,9 +191,9 @@ function generatePointLight(color, intensity){
 }
 
 function update(renderer, scene, camera, controls){
-//    spotBody.rotation.x += 0.01;
-//    spotBody.rotation.y += 0.01;
-
+    //scene.spotBody.rotation.x += 0.01;
+    //scene.spotBody.rotation.y += 0.01;
+    console.log(".");
     renderer.render( scene, camera );
     controls.update();
     requestAnimationFrame(function(){
