@@ -118,6 +118,7 @@ function main(){
         bodyHeight:25
     };
     let spotBody = drawBody(spot);
+    spotBody.name = "spotBody";
     
     let orig = new THREE.Vector3(l.Segments[0].topPosition.x,l.Segments[0].topPosition.y,l.Segments[0].topPosition.z);
     let end = new THREE.Vector3(l.Segments[0].getBottomPosition().x,l.Segments[0].getBottomPosition().y,l.Segments[0].getBottomPosition().z);
@@ -129,7 +130,7 @@ function main(){
     scene.add( spotLegFL );
     scene.add( floor );
     scene.add(pointLight);
-        
+
     update(renderer, scene, camera, controls);
 }
 
@@ -191,14 +192,12 @@ function generatePointLight(color, intensity){
 }
 
 function update(renderer, scene, camera, controls){
-    //scene.spotBody.rotation.x += 0.01;
-    //scene.spotBody.rotation.y += 0.01;
-    console.log(".");
-    renderer.render( scene, camera );
     controls.update();
+    scene.getObjectByName('spotBody').rotation.x += 0.05;
+    renderer.render(scene, camera);
     requestAnimationFrame(function(){
         update(renderer, scene, camera, controls);
-    })
+    });
 }
 
 main();
