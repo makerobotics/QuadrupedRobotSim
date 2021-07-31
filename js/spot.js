@@ -85,6 +85,11 @@ class Leg{
     }
 }
 
+var ws = new WebSocket("ws://127.0.0.1:5678/");
+    ws.onmessage = function (event) {
+        console.log(event.data);
+};
+
 function main(){
     let seg = new Segment(10, new Pvector(0,0,25), 45);
     let l = new Leg(seg);
@@ -124,7 +129,7 @@ function main(){
     let end = new THREE.Vector3(l.Segments[0].getBottomPosition().x,l.Segments[0].getBottomPosition().y,l.Segments[0].getBottomPosition().z);
     let spotLegFL = drawLegs(orig, end);
     
-    drawAxis(scene);
+    //drawAxis(scene);
 
     scene.add( spotBody );
     scene.add( spotLegFL );
