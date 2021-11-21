@@ -2,25 +2,27 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-
-			/*#info {
-				position: absolute;
-				top: 10px;
-				width: 100%;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			}*/
-		</style>
+		<title>Spot micro simulation</title>
 	</head>
-	<body>
+	<body onload="init()">
 		<div id="info">Description</div>
-		<div id="webgl"></div>
+		<div><canvas id="myCanvas3d"></canvas></div>
+        <div>
+			<canvas id="myCanvas2d" width="400" height="300"></canvas>
+		</div>
+		<div>
+			<label for="sims">Choose a simulation:</label>
+			<select id="sims" name="sims" onChange="combo(this)">
+			<option value=""></option>
+			<option value="swipe">swipe</option>
+			<option value="positions">positions</option>
+			<option value="bezier">bezier</option>
+			</select>
+		</div>
 		<script src="lib/three.js"></script>
-		<script src="lib/OrbitControls.js"></script>
-		<script src="js/spot.js"></script>
+        <script src="lib/dat.gui.min.js"></script>
+		<script src="js/spot_model.js"></script>
+		<script src="js/spot_sim_3d.js"></script>
+		<script src="js/spot_sim_2d.js"></script>
 	</body>
 </html>
