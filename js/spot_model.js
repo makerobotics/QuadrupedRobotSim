@@ -13,6 +13,8 @@ function leg(name, L1, L2, theta1, theta2, longPos, latPos){
    this.name = name;
    this.L1 = L1;
    this.L2 = L2;
+   this.X2 = 0;
+   this.Y2 = 0;
    this.theta1 = theta1;
    this.theta2 = theta2;
    this.longPos = longPos;

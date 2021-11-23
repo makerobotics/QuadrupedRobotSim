@@ -2,7 +2,6 @@ const canv = document.getElementById("myCanvas2d");
 const SIDE_OFFSET_X = 200, SIDE_OFFSET_Y = 10;
 const FRONT_OFFSET_X = 200, FRONT_OFFSET_Y = 150;
 const DRAW_FACTOR = 2;
-const REFRESH = 100;
 
 function drawLeg(context, leg){
 
