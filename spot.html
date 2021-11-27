@@ -5,20 +5,20 @@
 		<title>Spot micro simulation</title>
 	</head>
 	<body onload="init()">
-		<div id="info">Description</div>
 		<div><canvas id="myCanvas3d"></canvas></div>
-        <div>
+        <!--<div>
 			<canvas id="myCanvas2d" width="400" height="300"></canvas>
-		</div>
+		</div>-->
 		<div>
 			<label for="sims">Choose a simulation:</label>
 			<select id="sims" name="sims" onChange="combo(this)">
 			<option value=""></option>
 			<option value="stand">stand</option>
 			<option value="sit">sit</option>
-			<option value="swipe">swipe</option>
-			<option value="positions">positions</option>
+			<!--<option value="swipe">swipe</option>
+			<option value="positions">positions</option>-->
 			<option value="bezier">bezier</option>
+			<option value="manuel">manual</option>
 			</select>
 		</div>
 		<script src="js/spot.js"></script>

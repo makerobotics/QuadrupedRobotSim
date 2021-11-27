@@ -121,26 +121,26 @@ scene.add(light);
 // Options (DAT.GUI)
 let options = {
   base: 0,
-  shoulderFL: 0,
-  shoulderFR: 0,
-  shoulderRL: 0,
-  shoulderRR: 0,
-  kneeFL: 0,
-  kneeFR: 0,
-  kneeRL: 0,
-  kneeRR: 0,
+  shoulderFL: -60,
+  shoulderFR: -60,
+  shoulderRL: -60,
+  shoulderRR: -60,
+  kneeFL: 120,
+  kneeFR: 120,
+  kneeRL: 120,
+  kneeRR: 120,
 };
 // DAT.GUI Related Stuff
 let gui = new dat.GUI();
-gui.add(options, 'base', -90, 90).listen();
+gui.add(options, 'base', -180, 180).listen();
 gui.add(options, 'shoulderFL', -90, 90).listen();
 gui.add(options, 'shoulderFR', -90, 90).listen();
 gui.add(options, 'shoulderRL', -90, 90).listen();
 gui.add(options, 'shoulderRR', -90, 90).listen();
-gui.add(options, 'kneeFL', -90, 90).listen();
-gui.add(options, 'kneeFR', -90, 90).listen();
-gui.add(options, 'kneeRL', -90, 90).listen();
-gui.add(options, 'kneeRR', -90, 90).listen();
+gui.add(options, 'kneeFL', 0, 180).listen();
+gui.add(options, 'kneeFR', 0, 180).listen();
+gui.add(options, 'kneeRL', 0, 180).listen();
+gui.add(options, 'kneeRR', 0, 180).listen();
 
 // Rendering
 let xAxis = new THREE.Vector3(1, 0, 0);

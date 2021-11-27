@@ -92,8 +92,14 @@ function drawRobot() {
    ctx.fillText("RL: ("+Math.ceil(FR_leg.X2)+", "+Math.ceil(FR_leg.Y2)+")", 10, 270);
    ctx.fillText("RR: ("+Math.ceil(RR_leg.X2)+", "+Math.ceil(RR_leg.Y2)+")", 10, 280);
    
-   ctx.fillText("ThetaFL1: "+Math.ceil(FL_leg.theta1*180/Math.PI), 100, 250);
-   ctx.fillText("ThetaFL2: "+Math.ceil(RL_leg.theta2*180/Math.PI), 100, 260);
+   ctx.fillText("ThetaFL1: "+Math.ceil(FL_leg.theta1*180/Math.PI), 100, 220);
+   ctx.fillText("ThetaFL2: "+Math.ceil(FL_leg.theta2*180/Math.PI), 100, 230);
+   ctx.fillText("ThetaRL1: "+Math.ceil(RL_leg.theta1*180/Math.PI), 100, 240);
+   ctx.fillText("ThetaRL2: "+Math.ceil(RL_leg.theta2*180/Math.PI), 100, 250);
+   ctx.fillText("ThetaRL1: "+Math.ceil(RL_leg.theta1*180/Math.PI), 100, 260);
+   ctx.fillText("ThetaRL2: "+Math.ceil(RL_leg.theta2*180/Math.PI), 100, 270);
+   ctx.fillText("ThetaRR1: "+Math.ceil(RR_leg.theta1*180/Math.PI), 100, 280);
+   ctx.fillText("ThetaRR2: "+Math.ceil(RR_leg.theta2*180/Math.PI), 100, 290);
    //ctx.fillText("RL: ("+Math.ceil(FR_leg.X2)+", "+Math.ceil(FR_leg.Y2)+")", 10, 270);
    //ctx.fillText("RR: ("+Math.ceil(RR_leg.X2)+", "+Math.ceil(RR_leg.Y2)+")", 10, 280);
 
